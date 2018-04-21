@@ -59,3 +59,6 @@ group :test do
   # Blow out test data whenever we finished tests
   gem 'database_cleaner'
 end
+
+# JSON Web Tokens authorization
+gem 'jwt'
