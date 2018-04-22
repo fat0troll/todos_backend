@@ -1,13 +1,13 @@
 class TodosController < ApplicationController
   def index
     table = Todo.arel_table
-    @todos = Todo.where(table[:public].eq(true).or(table[:user_id].eq(current_user.id)))
+    @todos = Todo.where(table[:is_public].eq(true).or(table[:user_id].eq(current_user.id)))
     json_response(@todos)
   end
 
   def show
     table = Todo.arel_table
-    available_todos = Todo.where(table[:public].eq(true).or(table[:user_id].eq(current_user.id)))
+    available_todos = Todo.where(table[:is_public].eq(true).or(table[:user_id].eq(current_user.id)))
     @todo = available_todos.find_by!(:id => params[:id])
     json_response(@todo)
   end

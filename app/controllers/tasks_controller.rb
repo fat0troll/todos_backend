@@ -35,7 +35,7 @@ class TasksController < ApplicationController
 
   def set_objects
     table = Todo.arel_table
-    available_todos = Todo.where(table[:public].eq(true).or(table[:user_id].eq(current_user.id)))
+    available_todos = Todo.where(table[:is_public].eq(true).or(table[:user_id].eq(current_user.id)))
     @todo = available_todos.find(params[:todo_id])
     if !params[:id].blank? && !@todo.blank?
       @task = @todo.tasks.find_by!(:id => params[:id])

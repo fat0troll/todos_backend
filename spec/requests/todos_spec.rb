@@ -6,7 +6,7 @@ RSpec.describe 'Todos API', type: :request do
   let!(:another_user) { create(:user) }
   let!(:todos) { create_list(:todo, 10, user_id: user.id) }
   let!(:another_user_todos) { create_list(:todo, 10, user_id: another_user.id) }
-  let!(:public_todos) { create_list(:todo, 5, user_id: another_user.id, public: true) }
+  let!(:public_todos) { create_list(:todo, 5, user_id: another_user.id, is_public: true) }
   let(:todo_id) { todos.first.id }
   let(:another_user_todo_id) { another_user.todos.first.id }
   let(:headers) { valid_headers }
