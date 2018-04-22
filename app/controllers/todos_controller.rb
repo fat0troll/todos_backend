@@ -1,27 +1,30 @@
 class TodosController < ApplicationController
   def index
-    @todos = Todo.all
+    table = Todo.arel_table
+    @todos = Todo.where(table[:public].eq(true).or(table[:user_id].eq(current_user.id)))
     json_response(@todos)
   end
 
   def show
-    @todo = Todo.find(params[:id])
+    table = Todo.arel_table
+    available_todos = Todo.where(table[:public].eq(true).or(table[:user_id].eq(current_user.id)))
+    @todo = available_todos.find_by!(:id => params[:id])
     json_response(@todo)
   end
 
   def create
-    @todo = Todo.create!(todo_params)
+    @todo = current_user.todos.create!(todo_params)
     json_response(@todo, :created)
   end
 
   def update
-    @todo = Todo.find(params[:id])
+    @todo = current_user.todos.find_by!(:id => params[:id])
     @todo.update(todo_params)
     head :no_content
   end
 
   def destroy
-    @todo = Todo.find(params[:id])
+    @todo = current_user.todos.find_by!(:id => params[:id])
     @todo.destroy
     head :no_content
   end
@@ -29,6 +32,6 @@ class TodosController < ApplicationController
   private
 
   def todo_params
-    params.permit(:title, :user_id)
+    params.permit(:title, :public)
   end
 end

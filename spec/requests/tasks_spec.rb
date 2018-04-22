@@ -6,9 +6,10 @@ RSpec.describe 'Tasks API' do
   let!(:tasks) { create_list(:task, 20, todo_id: todo.id) }
   let(:todo_id) { todo.id }
   let(:id) { tasks.first.id }
+  let(:headers) { valid_headers }
 
   describe 'GET /todos/:todo_id/tasks' do
-    before { get "/todos/#{todo_id}/tasks" }
+    before { get "/todos/#{todo_id}/tasks", params: {}, headers: headers }
 
     context 'when todo exists' do
       it 'returns status code 200' do
@@ -34,7 +35,7 @@ RSpec.describe 'Tasks API' do
   end
 
   describe 'GET /todos/:todo_id/tasks/:id' do
-    before { get "/todos/#{todo_id}/tasks/#{id}" }
+    before { get "/todos/#{todo_id}/tasks/#{id}", params: {}, headers: headers }
 
     context 'when task exists' do
       it 'returns status code 200' do
@@ -60,10 +61,12 @@ RSpec.describe 'Tasks API' do
   end
 
   describe 'POST /todos/:todo_id/tasks' do
-    let(:valid_attributes) { { name: 'Capture the flag', done: false } }
+    let(:valid_attributes) do
+      { name: 'Capture the flag', done: false }.to_json
+    end
 
     context 'when request attributes are valid' do
-      before { post "/todos/#{todo_id}/tasks", params: valid_attributes }
+      before { post "/todos/#{todo_id}/tasks", params: valid_attributes, headers: headers }
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
@@ -71,7 +74,7 @@ RSpec.describe 'Tasks API' do
     end
 
     context 'when an invalid request' do
-      before { post "/todos/#{todo_id}/tasks", params: {} }
+      before { post "/todos/#{todo_id}/tasks", params: {}, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -84,9 +87,11 @@ RSpec.describe 'Tasks API' do
   end
 
   describe 'PUT /todos/:todo_id/tasks/:id' do
-    let(:valid_attributes) { { name: 'Reinhardt' } }
+    let(:valid_attributes) do
+      { name: 'Reinhardt' }.to_json
+    end
 
-    before { put "/todos/#{todo_id}/tasks/#{id}", params: valid_attributes }
+    before { put "/todos/#{todo_id}/tasks/#{id}", params: valid_attributes, headers: headers }
 
     context 'when task exists' do
       it 'returns status code 204' do
@@ -113,7 +118,7 @@ RSpec.describe 'Tasks API' do
   end
 
   describe 'DELETE /todos/:id' do
-    before { delete "/todos/#{todo_id}/tasks/#{id}" }
+    before { delete "/todos/#{todo_id}/tasks/#{id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

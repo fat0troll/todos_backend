@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  # Avoid authentication loop
+  skip_before_action :authorize_request, only: :create
+
   def create
     user = User.create!(user_params)
     # We already failed at this point if something went wrong

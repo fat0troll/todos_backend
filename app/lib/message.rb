@@ -1,5 +1,9 @@
 # This class defines messages to throw at API endpoint
 class Message
+  def self.forbidden
+    "You don't have access to this item"
+  end
+
   def self.not_found(record = 'record')
     "Sorry, #{record} not found."
   end
