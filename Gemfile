@@ -62,3 +62,6 @@ end
 
 # JSON Web Tokens authorization
 gem 'jwt'
+
+# Serialization (for making less API requests from frontend)
+gem 'fast_jsonapi'
