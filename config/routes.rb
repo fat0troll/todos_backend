@@ -4,5 +4,7 @@ Rails.application.routes.draw do
   end
 
   post '/login', to: 'authentication#login'
-  post 'signup', to: 'users#create'
+  post '/signup', to: 'users#create'
+
+  root to: 'todos#index'
 end
