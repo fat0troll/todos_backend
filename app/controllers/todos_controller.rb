@@ -32,6 +32,6 @@ class TodosController < ApplicationController
   private
 
   def todo_params
-    params.permit(:title, :public)
+    params.permit(:title, :is_public)
   end
 end
